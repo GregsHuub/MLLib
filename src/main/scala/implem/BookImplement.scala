@@ -6,23 +6,24 @@ import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 
-object BookImplement {
+class BookImplement {
 
   private var bookList = new mutable.LinkedHashMap[Long, Book]
 
-  def setupDataBase(): Unit = {
+  def setupDataBase(): mutable.LinkedHashMap[Long, Book] = {
     bookList = mutable.LinkedHashMap(
-      1L -> BookImplement.createBook("The Kite Runner", 2018, "Khaled Hosseini")
-      , 2L -> BookImplement.createBook("Origin", 2016, "Dan Brown")
-      , 3L -> BookImplement.createBook("Inferno", 2009, "Dan Brown")
-      , 4L -> BookImplement.createBook("Wither - The Last Wish", 2020, "Adnrzej Sapkowski")
-      , 5L -> BookImplement.createBook("Time of Contempt", 2014, "Andrzej Sapkowski")
-      , 6L -> BookImplement.createBook("1984", 2008, "George Orwell")
-      , 7L -> BookImplement.createBook("Sapiens", 2016, "Yuval Noah Harari")
-      , 8L -> BookImplement.createBook("The Lord of the Rings", 1954, "J. R. R. Tolkien")
-      , 9L -> BookImplement.createBook("Harry Potter and the Philosopher's Stone", 1997, "J. K. Rowling")
-      , 10L -> BookImplement.createBook("The Hobbit", 1937, "J. R. R. Tolkien")
-      , 11L -> BookImplement.createBook("And Then There Were None", 1939, "Agatha Christie"))
+      1L -> createBook("The Kite Runner", 2018, "Khaled Hosseini")
+      , 2L -> createBook("Origin", 2016, "Dan Brown")
+      , 3L -> createBook("Inferno", 2009, "Dan Brown")
+      , 4L -> createBook("Wither - The Last Wish", 2020, "Andrzej Sapkowski")
+      , 5L -> createBook("Time of Contempt", 2014, "Andrzej Sapkowski")
+      , 6L -> createBook("1984", 2008, "George Orwell")
+      , 7L -> createBook("Sapiens", 2016, "Yuval Noah Harari")
+      , 8L -> createBook("The Lord of the Rings", 1954, "J. R. R. Tolkien")
+      , 9L -> createBook("Harry Potter and the Philosopher's Stone", 1997, "J. K. Rowling")
+      , 10L -> createBook("The Hobbit", 1937, "J. R. R. Tolkien")
+      , 11L -> createBook("And Then There Were None", 1939, "Agatha Christie"))
+    bookList
   }
 
   def bookListPass(): mutable.LinkedHashMap[Long, Book] = {
