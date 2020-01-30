@@ -11,17 +11,18 @@ public class BookService implements BooksWriteUtils {
     private Map<Long, Book> listOfBooks = new ConcurrentHashMap<>();
 
 
-    //write functions
-    public String createBook(String title, Integer year, String author) {
-        listOfBooks.put(listOfBooks.size() + 1L, new Book(title, year, author));
-        return "Dodano ksiazke";
+    public Book createBook(String title, Integer year, String author) {
+        Book newBook = new Book(title, year, author);
+        listOfBooks.put(listOfBooks.size() + 1L, newBook);
+        return newBook;
     }
 
     public Map<Long, Book> getListOfBooks() {
         long available = listOfBooks.values().stream().filter(book -> !book.getLentStatus()).count();
-        listOfBooks.entrySet().forEach(x -> System.out.println(x.toString().replace("=", " - ")));
-        System.out.println("available: " + available);
-        System.out.println("lent: " + (listOfBooks.size() - available));
+        //todo ZAKOMENTOWANE W RAMACH TESTOW
+//        listOfBooks.entrySet().forEach(x -> System.out.println(x.toString().replace("=", " - ")));
+//        System.out.println("available: " + available);
+//        System.out.println("lent: " + (listOfBooks.size() - available));
         return listOfBooks;
     }
 
@@ -29,6 +30,7 @@ public class BookService implements BooksWriteUtils {
     public Book getSingleBookByMapId(Long id) {
         return listOfBooks.get(id);
     }
+
 
     public Book lentBook(String name, Long bookId) {
         Book book = listOfBooks.get(bookId);
@@ -52,6 +54,7 @@ public class BookService implements BooksWriteUtils {
             System.out.printf("Pozycja o ID: %s nie istnieje, lub jest wynajęta", id);
         }
     }
+    // TODO: 29.01.2020 add searcing
 
 
 }

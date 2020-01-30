@@ -12,6 +12,7 @@ public class Book {
     private String person;
 
 
+
     public Book(String title, Integer year, String author) {
         this.title = title;
         this.year = year;
@@ -51,10 +52,6 @@ public class Book {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
     public Boolean getLentStatus() {
         return lentStatus;
     }
@@ -80,4 +77,3 @@ public class Book {
         }
     }
 }
-// TODO: 17.01.2020 teraz dodac szukanie 
