@@ -13,9 +13,15 @@ fun main() {
 
     val imp = Implementation()
     imp.setUpDatabase()
-    imp.findById(1).description()
-    imp.lentBook(1,"Greg!!!")
-    imp.findById(1).fullDescription()
+    val findByWords = imp.findByWordsTEST("Sapkowski", 2016)
+    findByWords.forEach { v -> v.fullDescription() }
+
+//    val lista: List<String> = listOf("aasda", "cxzczxczc")
+//    imp.findById(1).description()
+//    imp.lentBook(1, "Greg!!!")
+//    imp.findById(1).fullDescription()
+//    imp.fullDescriptionsList()
+
 }
 
 var map = ConcurrentHashMap<Long, Book>()
@@ -69,29 +75,49 @@ class Implementation() : Func<Book>, SetUp<Book> {
     }
 
 
-    override fun findByWords(title: String, author: String, year: Int): ConcurrentHashMap<Long, Book> {
-        val temp: ConcurrentHashMap<Long, Book> = map
-        //todo
-        return temp
-    }
-
-    override fun getBooksViaMap(): Map<Long, Book> {
-        return map
-    }
-
-    override fun lentBook(id: Long, yourName: String) {
-
-        if (!findById(id).lentStatus && findById(id).year != 0) {
-            findById(id).owner = yourName
-            findById(id).lentStatus = true
-            if (findById(id).ownersHistory.containsKey(yourName)) {
-                findById(id).ownersHistory.getValue(yourName).add(Owner(yourName))
-            } else {
-                findById(id).ownersHistory[yourName] = mutableListOf(Owner(yourName))
+     fun findByWordsTEST(vararg words: Any): MutableList<Book> {
+        var returnList:MutableList<Book> = mutableListOf()
+        words.forEach { word ->
+            if(word is Int){
+                map.forEach{(_,v) ->
+                    run {
+                        if (v.year == word.toInt()) {
+                            returnList.add(v)
+                        } ;
+                        if (v.title.contains(word.toString())) {
+                            returnList.add(v)
+                        }
+                    }
+                }
             }
-            println("The Book is now yours for a month :) enjoy")
-        } else {
-            println("ID doesn't exist, or someone else got this book :)")
+
         }
+
+        return returnList
+    }
+
+override fun getBooksViaMap(): Map<Long, Book> {
+    return map
+}
+
+override fun lentBook(id: Long, yourName: String) {
+
+    if (!findById(id).lentStatus && findById(id).year != 0) {
+        findById(id).owner = yourName
+        findById(id).lentStatus = true
+        if (findById(id).ownersHistory.containsKey(yourName)) {
+            findById(id).ownersHistory.getValue(yourName).add(Owner(yourName))
+        } else {
+            findById(id).ownersHistory[yourName] = mutableListOf(Owner(yourName))
+        }
+        println("The Book is now yours for a month :) enjoy")
+    } else {
+        println("ID doesn't exist, or someone else got this book :)")
+    }
+}
+
+    override fun findByWords(vararg words: Any): Map<Long, Book> {
+       val mapa:Map<Long, Book> = emptyMap()
+        return mapa
     }
 }

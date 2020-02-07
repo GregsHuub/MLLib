@@ -1,5 +1,6 @@
 package com.library.entityKotli
 
+import java.io.Serializable
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -13,15 +14,15 @@ fun main() {
     book2.description()
 }
 
-class Book(val title: String, val author: String, val year: Int, var lentStatus: Boolean = false) {
+class Book(val title: String, val author: String, val year: Int, var lentStatus: Boolean = false) : Serializable {
 
     var owner: String = ""
-    val hashID = UUID.randomUUID().toString().subSequence(0, 8)
+    val hashID = UUID.randomUUID().let { it.toString().subSequence(0, 8) }
     val addingTime = LocalDateTime.now().dater()
     var ownersHistory: LinkedHashMap<String, MutableList<Owner>> = LinkedHashMap()
 
     fun description() {
-        if (owner.isNullOrBlank()) {
+        if (owner.isBlank()) {
             println("title: $title, author: $author, year: $year, lentStatus: $lentStatus," +
                     " creating Time: $addingTime, hashID: $hashID")
         } else {
@@ -29,18 +30,30 @@ class Book(val title: String, val author: String, val year: Int, var lentStatus:
                     " lent Status: $lentStatus, creating Time: $addingTime, hashID: $hashID")
         }
     }
+
     fun fullDescription() {
+        val historyValue = when {
+            ownersHistory.isEmpty() -> "No owners history yet"
+            else -> ownersHistory
+        }
+
         println("""
                 |title: $title, author: $author, year: $year, 
                 |lent Status: $lentStatus, creating Time: $addingTime, hashID: $hashID
-                |history owners: ${ownersHistory.values}
+                |history owners: $historyValue
                 |""".trimMargin("|"))
     }
 
 }
 
-fun LocalDateTime.dater(): LocalDateTime {
+fun LocalDateTime.dater(): String {
     val formatter = DateTimeFormatter.ofPattern("HH:mm yyyy-MM-dd")
-    return LocalDateTime.parse(this.toString(), formatter)
+    return this.format(formatter)
+
+}
+
+fun String.daterToDate(): LocalDateTime {
+    val formatter = DateTimeFormatter.ofPattern("HH:mm yyyy-MM-dd")
+    return LocalDateTime.parse(this, formatter)
 
 }
