@@ -19,7 +19,7 @@ public class BookService implements BooksWriteUtils {
 
     public Map<Long, Book> getListOfBooks() {
         long available = listOfBooks.values().stream().filter(book -> !book.getLentStatus()).count();
-        //todo ZAKOMENTOWANE W RAMACH TESTOW
+//        todo ZAKOMENTOWANE W RAMACH TESTOW
 //        listOfBooks.entrySet().forEach(x -> System.out.println(x.toString().replace("=", " - ")));
 //        System.out.println("available: " + available);
 //        System.out.println("lent: " + (listOfBooks.size() - available));

@@ -9,7 +9,6 @@ import scala.collection.mutable
 
 class SearchingTest extends AnyFlatSpec {
 
-
   private val bookImplement = new BookImplement()
   private val searchingImpl = new SearchingImpl(bookImplement)
 
