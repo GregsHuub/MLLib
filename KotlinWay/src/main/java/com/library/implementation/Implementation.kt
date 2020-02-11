@@ -9,18 +9,24 @@ import com.library.funcTrait.Func
 import com.library.funcTrait.SetUp
 import java.util.concurrent.ConcurrentHashMap
 
+
 fun main() {
 
     val imp = Implementation()
-    imp.setUpDatabase()
-    val findByWords = imp.findByWordsTEST("Sapkowski", 2016)
-    findByWords.forEach { v -> v.fullDescription() }
 
-//    val lista: List<String> = listOf("aasda", "cxzczxczc")
-//    imp.findById(1).description()
-//    imp.lentBook(1, "Greg!!!")
-//    imp.findById(1).fullDescription()
-//    imp.fullDescriptionsList()
+    imp.setUpDatabase()
+
+    imp.findBook("elf", "Sapkowski", year = 2014).forEach { (k, v) ->
+        println(k)
+        v.description()
+    }
+//    val returnValue = imp.findBook("Angels","Brown", year = 2013)
+//    returnValue.forEach{(k,v) -> v.fullDescription()}
+
+    val array: List<String> = listOf("TAK", "NIE", "CHYBA", "COS")
+//
+//    findByWords.forEach { v -> v.fullDescription() }
+
 
 }
 
@@ -75,49 +81,46 @@ class Implementation() : Func<Book>, SetUp<Book> {
     }
 
 
-     fun findByWordsTEST(vararg words: Any): MutableList<Book> {
-        var returnList:MutableList<Book> = mutableListOf()
-        words.forEach { word ->
-            if(word is Int){
-                map.forEach{(_,v) ->
-                    run {
-                        if (v.year == word.toInt()) {
-                            returnList.add(v)
-                        } ;
-                        if (v.title.contains(word.toString())) {
-                            returnList.add(v)
-                        }
-                    }
-                }
+    override fun findBook(vararg words: String, year: Int): Map<Long, Book> {
+        val wordsStr: List<String> = listOf(*words).map { x -> x.toUpperCase() }
+        return map.filterValues { v ->
+            containsChecker(wordsStr, v.title) and containsChecker(wordsStr, v.author) && v.year == year
+        }
+    }
+    override fun findBook(word: String): Map<Long, Book> {
+        return map.filterValues { v -> v.title.toUpperCase().contains(word.toUpperCase()) or v.author.toUpperCase().contains(word.toUpperCase()) }
+    }
+    override fun findBook(year: Int): Map<Long, Book> {
+        return map.filterValues {v -> v.year == year}
+    }
+    private fun containsChecker(list: List<String>, str: String): Boolean {
+        var boolean: Boolean = false
+        for (s in list) {
+            s.toUpperCase()
+            if (str.toUpperCase().contains(s)) {
+                boolean = true
             }
-
         }
-
-        return returnList
+        return boolean
     }
 
-override fun getBooksViaMap(): Map<Long, Book> {
-    return map
-}
+    override fun getBooksViaMap(): Map<Long, Book> {
+        return map
+    }
 
-override fun lentBook(id: Long, yourName: String) {
+    override fun lentBook(id: Long, yourName: String) {
 
-    if (!findById(id).lentStatus && findById(id).year != 0) {
-        findById(id).owner = yourName
-        findById(id).lentStatus = true
-        if (findById(id).ownersHistory.containsKey(yourName)) {
-            findById(id).ownersHistory.getValue(yourName).add(Owner(yourName))
+        if (!findById(id).lentStatus && findById(id).year != 0) {
+            findById(id).owner = yourName
+            findById(id).lentStatus = true
+            if (findById(id).ownersHistory.containsKey(yourName)) {
+                findById(id).ownersHistory.getValue(yourName).add(Owner(yourName))
+            } else {
+                findById(id).ownersHistory[yourName] = mutableListOf(Owner(yourName))
+            }
+            println("The Book is now yours for a month :) enjoy")
         } else {
-            findById(id).ownersHistory[yourName] = mutableListOf(Owner(yourName))
+            println("ID doesn't exist, or someone else got this book :)")
         }
-        println("The Book is now yours for a month :) enjoy")
-    } else {
-        println("ID doesn't exist, or someone else got this book :)")
-    }
-}
-
-    override fun findByWords(vararg words: Any): Map<Long, Book> {
-       val mapa:Map<Long, Book> = emptyMap()
-        return mapa
     }
 }

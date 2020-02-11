@@ -2,7 +2,6 @@ package com.library.enums
 
 enum class Data() {
     ;
-    fun getFullDescription() = println();
     enum class Sapkowski(val title: String, val year: Int, val author: String = "Andrzej Sapkowski") {
         ELFSBLOOD("Elf's Blood", 1993),
         WITCHER1("Witcher I : storm season", 2014),

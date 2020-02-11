@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Assertions.*
 import org.omg.CORBA.Object
 import java.util.concurrent.ConcurrentHashMap
 
-val MAP:ConcurrentHashMap<Long,Book> = Implementation().setUpDatabase()
+val impl = Implementation()
+//val dataBase = impl.setUpDatabase()
+val MAP = impl.setUpDatabase()
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TestKotlin() : Runnable {
 
@@ -21,6 +23,14 @@ class TestKotlin() : Runnable {
 //            MAP
             run()
         }).start()
+    }
+    @Test
+    fun searchChecker() {
+//        impl.printAll()
+        assertEquals(MAP.getValue(1).author, impl.findBook("Angels","Brown", year = 2013))
+//        assertEquals(MAP.getValue(1).author,impl.findBook("angels","brown",2013) )
+//        assertEquals(MAP.getValue(1).author,impl.findBook("deamons","dan",2013) )
+//        assertEquals(MAP.getValue(1).author,impl.findBook("gels","br",2013) )
     }
     @Test
     fun enumChecker() {

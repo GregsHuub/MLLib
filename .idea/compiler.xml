@@ -8,8 +8,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="KotlinWay" />
         <module name="LibraryAppNewWay" />
-        <module name="newLibrary" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="newLibrary" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
